@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "FastAPI Debug",
+        "type": "python",
+        "request": "launch",
+        "module": "uvicorn",
+        "cwd":"${workspaceFolder}/python_approach",
+        "args": [
+          "dopc_api:app",
+          "--reload"
+        ],
+        "env": {},
+        "justMyCode": true
+      }
+    ]
+  }
+  
