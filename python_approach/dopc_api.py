@@ -32,8 +32,8 @@ def delivery_order_price_calculator(
     
     
     #calculating distance
-    venue_lat, venue_lon = venue_coordinates
-    distance = calculate_distance(user_lat, user_lon, venue_lat, venue_lon)
+    venue_lon, venue_lat = venue_coordinates
+    distance = calculate_distance(user_lon, user_lat, venue_lon, venue_lat)
     
     for distance_item in distance_ranges:
         if distance_item["min"] <= distance < distance_item["max"]:
@@ -45,17 +45,23 @@ def delivery_order_price_calculator(
         
     
     
+    distance_fee = round(b * distance /10)
+    delivery_fee = base_price + a + distance_fee
+    
+    small_order_surcharge = max(0, order_minimum_no_surcharge - cart_value)
+    
+    # Calculate total price
+    total_price = cart_value + small_order_surcharge + delivery_fee
     
     
-    
-    
-    
-    # print()
-    
-    return {
-        "venue_slug": venue_slug,
+    response = {
+        "total_price": total_price,
+        "small_order_surcharge": small_order_surcharge,
         "cart_value": cart_value,
-        "user_lat": user_lat,
-        "user_lon": user_lon,
-        "delivery_price": distance,
-    }
+        "delivery": {
+            "fee": delivery_fee,
+            "distance": distance
+           }
+        }
+        
+    return response
