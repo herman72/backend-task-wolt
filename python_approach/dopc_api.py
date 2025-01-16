@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Query
 import httpx
-from utils import haversine
+from utils import calculate_distance
 
 app = FastAPI()
 
@@ -33,7 +33,17 @@ def delivery_order_price_calculator(
     
     #calculating distance
     venue_lat, venue_lon = venue_coordinates
-    haversine(user_lat, user_lon, venue_lat, venue_lon)
+    distance = calculate_distance(user_lat, user_lon, venue_lat, venue_lon)
+    
+    for distance_item in distance_ranges:
+        if distance_item["min"] <= distance < distance_item["max"]:
+            a = distance_item["a"]
+            b = distance_item["b"]
+            break
+    else:
+        HTTPException(status_code=400, detail="Delivery not available for this distance.")
+        
+    
     
     
     
