@@ -41,7 +41,7 @@ def delivery_order_price_calculator(
             b = distance_item["b"]
             break
     else:
-        HTTPException(status_code=400, detail="Delivery not available for this distance.")
+        raise HTTPException(status_code=400, detail="Delivery not available for this distance.")
         
     
     
@@ -57,5 +57,5 @@ def delivery_order_price_calculator(
         "cart_value": cart_value,
         "user_lat": user_lat,
         "user_lon": user_lon,
-        "delivery_price": static_response.json(),
+        "delivery_price": distance,
     }
