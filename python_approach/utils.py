@@ -2,7 +2,7 @@
 import math
 
 
-def calculate_distance(lat1, lon1, lat2, lon2):
+def calculate_distance(lon1, lat1, lon2, lat2):
     # Convert latitude and longitude from degrees to radians
     lat1, lon1, lat2, lon2 = map(math.radians, [lat1, lon1, lat2, lon2])
     
@@ -13,7 +13,7 @@ def calculate_distance(lat1, lon1, lat2, lon2):
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     
     # Radius of Earth in kilometers. Use 3956 for miles
-    radius = 6371  
+    radius = 6371 * 1000
     distance = radius * c
     
     return distance
