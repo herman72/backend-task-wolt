@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from app.services.venue_service import fetch_venue_data
-from app.utils.calculate_distance import calculate_distance
-from python_approach.app.schemas.models import DeliveryRequest, DeliveryResponse
+from app.utils.helper import calculate_distance
+from app.schemas.models import DeliveryRequest, DeliveryResponse
 
 router = APIRouter()
 
