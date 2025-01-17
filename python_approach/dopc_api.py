@@ -22,6 +22,7 @@ def delivery_order_price_calculator(
     user_lat: float = Query(..., description="Latitude of the user"),
     user_lon: float = Query(..., description="Longitude of the user"),
 ):
+    
     static_data = fetch_venue_data(venue_slug, "static")
     dynamic_data = fetch_venue_data(venue_slug, "dynamic")
     
