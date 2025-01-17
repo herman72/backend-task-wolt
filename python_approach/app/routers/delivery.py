@@ -11,7 +11,7 @@ async def delivery_order_price_calculator(venue_slug: str = Query(None, descript
     cart_value: int = Query(None, gt=0, description="Cart value in cents."),
     user_lat: float = Query(None, ge=-90, le=90, description="User's latitude."),
     user_lon: float = Query(None, ge=-180, le=180, description="User's longitude."),
-    body: Optional[DeliveryRequest] = Body(None)):
+    body: Optional[DeliveryRequest] = Body(None)) -> DeliveryResponse:
     
     """
     Calculate the delivery order price based on the given input parameters or request body.

@@ -3,7 +3,7 @@ from fastapi import HTTPException
 
 API_BASE_URL = "https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues"
 
-async def fetch_venue_data(venue_slug: str, endpoint: str):
+async def fetch_venue_data(venue_slug: str, endpoint: str) -> dict:
     """
     Fetch data for a specific venue from the given endpoint.
     This function interacts with the Wolt API to retrieve static or dynamic data for a venue.
