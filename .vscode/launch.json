@@ -8,7 +8,7 @@
         "module": "uvicorn",
         "cwd":"${workspaceFolder}/python_approach",
         "args": [
-          "dopc_api:app",
+          "app.main:app",
           "--reload"
         ],
         "env": {},
