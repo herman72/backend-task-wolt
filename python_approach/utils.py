@@ -12,7 +12,7 @@ def calculate_distance(lon1, lat1, lon2, lat2):
     a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     
-    # Radius of Earth in kilometers. Use 3956 for miles
+    # Radius of Earth in Meters.
     radius = 6371 * 1000
     distance = radius * c
     
