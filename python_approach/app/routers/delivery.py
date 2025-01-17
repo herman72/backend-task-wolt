@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException
+from typing import Optional
+from fastapi import APIRouter, Body, HTTPException, Query
 from app.services.venue_service import fetch_venue_data
 from app.utils.helper import calculate_distance
 from app.schemas.models import DeliveryRequest, DeliveryResponse
@@ -6,9 +7,25 @@ from app.schemas.models import DeliveryRequest, DeliveryResponse
 router = APIRouter()
 
 @router.get("/delivery-order-price", tags=["Delivery"])
-async def delivery_order_price_calculator(request_data: DeliveryRequest):
+async def delivery_order_price_calculator(venue_slug: str = Query(None, description="The venue slug for the delivery."),
+    cart_value: int = Query(None, gt=0, description="Cart value in cents."),
+    user_lat: float = Query(None, ge=-90, le=90, description="User's latitude."),
+    user_lon: float = Query(None, ge=-180, le=180, description="User's longitude."),
+    body: Optional[DeliveryRequest] = Body(None)):
     
     try:
+        
+        if body:
+            request_data = body
+        elif venue_slug and cart_value and user_lat and user_lon:
+            request_data = DeliveryRequest(
+                venue_slug=venue_slug,
+                cart_value=cart_value,
+                user_lat=user_lat,
+                user_lon=user_lon
+            )
+        else:
+            raise HTTPException(status_code=400, detail="Invalid input: Either provide query parameters or a JSON body.")
         
         static_data = await fetch_venue_data(request_data.venue_slug, "static")
         dynamic_data = await fetch_venue_data(request_data.venue_slug, "dynamic")
