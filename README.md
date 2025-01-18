@@ -63,7 +63,7 @@ This is a FastAPI-based application that calculates delivery order prices, inclu
 
 ## API Endpoints
 
-### `POST /api/v1/delivery-order-price`
+### `GET /api/v1/delivery-order-price`
 
 #### Request Body
 ```json
