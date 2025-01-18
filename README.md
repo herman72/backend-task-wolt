@@ -65,15 +65,6 @@ This is a FastAPI-based application that calculates delivery order prices, inclu
 
 ### `GET /api/v1/delivery-order-price`
 
-#### Request Body
-```json
-{
-  "venue_slug": "home-assignment-venue-helsinki",
-  "cart_value": 1500,
-  "user_lat": 60.17094,
-  "user_lon": 24.93087
-}
-```
 
 #### Response
 ```json
@@ -90,17 +81,6 @@ This is a FastAPI-based application that calculates delivery order prices, inclu
 
 #### Example Usage
 Using `curl`:
-```bash
-curl -X GET "http://127.0.0.1:8000/api/v1/delivery-order-price" \
--H "Content-Type: application/json" \
--d '{
-  "venue_slug": "home-assignment-venue-helsinki",
-  "cart_value": 1500,
-  "user_lat": 60.17094,
-  "user_lon": 24.93087
-}'
-```
-OR
 
 ```bash
 curl http://localhost:8000/api/v1/delivery-order-price\?venue_slug\=home-assignment-venue-helsinki\&cart_value\=1000\&user_lat\=60.17094\&user_lon\=24.93087
