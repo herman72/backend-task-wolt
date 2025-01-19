@@ -1,5 +1,4 @@
-from typing import Optional
-from fastapi import APIRouter, Body, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query
 from app.services.venue_service import fetch_venue_data
 from app.utils.helper import calculate_distance
 from app.schemas.models import DeliveryRequest, DeliveryResponse
@@ -10,8 +9,7 @@ router = APIRouter()
 async def delivery_order_price_calculator(venue_slug: str = Query(None, description="The venue slug for the delivery."),
     cart_value: int = Query(None, gt=0, description="Cart value in cents."),
     user_lat: float = Query(None, ge=-90, le=90, description="User's latitude."),
-    user_lon: float = Query(None, ge=-180, le=180, description="User's longitude."),
-    body: Optional[DeliveryRequest] = Body(None)) -> DeliveryResponse:
+    user_lon: float = Query(None, ge=-180, le=180, description="User's longitude.")) -> DeliveryResponse:
     
     """
     Calculate the delivery order price based on the given input parameters or request body.
@@ -21,7 +19,6 @@ async def delivery_order_price_calculator(venue_slug: str = Query(None, descript
         - cart_value (int): The value of the cart in cents.
         - user_lat (float): Latitude of the user's location.
         - user_lon (float): Longitude of the user's location.
-        - body (DeliveryRequest, optional): JSON body containing request data.
 
     Returns:
         - DeliveryResponse: An object containing the calculated delivery fee, surcharge, and total price.
@@ -32,9 +29,7 @@ async def delivery_order_price_calculator(venue_slug: str = Query(None, descript
     
     try:
         # Parse input data from either the query parameters or the JSON body
-        if body:
-            request_data = body
-        elif venue_slug and cart_value and user_lat and user_lon:
+        if venue_slug and cart_value and user_lat and user_lon:
             request_data = DeliveryRequest(
                 venue_slug=venue_slug,
                 cart_value=cart_value,
@@ -64,7 +59,7 @@ async def delivery_order_price_calculator(venue_slug: str = Query(None, descript
 
         delivery_fee = None
         for range in distance_ranges:
-            if range["min"] <= delivery_distance < range["max"] or range["max"] == 0:
+            if range["min"] <= delivery_distance < range.get("max", 0):
                 delivery_fee = base_price + range["a"] + round(range["b"] * delivery_distance / 10)
                 break
 
