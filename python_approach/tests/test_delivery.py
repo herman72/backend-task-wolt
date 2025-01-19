@@ -18,7 +18,6 @@ def test_delivery_order_price_success():
             "user_lon": 24.93087,
         },
     )
-    print(response.json())
     
     # Check the response status
     assert response.status_code == 200, f"Unexpected status code: {response.status_code}"
@@ -36,3 +35,18 @@ def test_delivery_order_price_success():
     assert "fee" in delivery and delivery["fee"] is not None, "Missing or null 'fee' in delivery data"
     assert "distance" in delivery and delivery["distance"] is not None, "Missing or null 'distance' in delivery data"
     
+def test_delivery_order_price_invalid_distance():
+    """Test handling of delivery distance exceeding the allowed range."""
+    response = client.get(
+        "/api/v1/delivery-order-price",
+        params={
+            "venue_slug": "home-assignment-venue-helsinki",
+            "cart_value": 1500,
+            "user_lat": 90.0,  # Extreme latitude far from the venue
+            "user_lon": 135.0,
+        },
+    )
+    assert response.status_code == 400
+    data = response.json()
+    assert "detail" in data
+    assert "distance is too long" in data["detail"]
