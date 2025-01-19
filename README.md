@@ -65,6 +65,12 @@ This is a FastAPI-based application that calculates delivery order prices, inclu
 
 ### `GET /api/v1/delivery-order-price`
 
+#### Example Usage
+Using `curl`:
+
+```bash
+curl http://localhost:8000/api/v1/delivery-order-price\?venue_slug\=home-assignment-venue-helsinki\&cart_value\=1000\&user_lat\=60.17094\&user_lon\=24.93087
+```
 
 #### Response
 ```json
@@ -79,12 +85,15 @@ This is a FastAPI-based application that calculates delivery order prices, inclu
 }
 ```
 
-#### Example Usage
-Using `curl`:
+### Valid venue slug
 
-```bash
-curl http://localhost:8000/api/v1/delivery-order-price\?venue_slug\=home-assignment-venue-helsinki\&cart_value\=1000\&user_lat\=60.17094\&user_lon\=24.93087
-```
+Finland: home-assignment-venue-helsinki
+
+Sweden: home-assignment-venue-stockholm
+
+Germany: home-assignment-venue-berlin
+
+Japan: home-assignment-venue-tokyo
 
 ---
 
@@ -104,7 +113,7 @@ project-folder/
 │   │   ├── venue_service.py  # Handles external API calls
 │   ├── utils/
 │   │   ├── __init__.py
-│   │   ├── calculate_distance.py  # Distance calculation logic
+│   │   ├── delivery_calculations.py  # calculation all logic of delivery
 ├── tests/
 │   ├── test_delivery.py      # Unit tests for the API
 ├── requirements.txt          # Python dependencies
