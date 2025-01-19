@@ -3,7 +3,7 @@
     "configurations": [
       {
         "name": "FastAPI Debug",
-        "type": "python",
+        "type": "debugpy",
         "request": "launch",
         "module": "uvicorn",
         "cwd":"${workspaceFolder}",
