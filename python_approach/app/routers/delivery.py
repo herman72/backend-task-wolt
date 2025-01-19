@@ -1,5 +1,4 @@
-from typing import Optional
-from fastapi import APIRouter, Body, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query
 from app.services.venue_service import fetch_venue_data
 from app.utils.helper import calculate_distance
 from app.schemas.models import DeliveryRequest, DeliveryResponse
