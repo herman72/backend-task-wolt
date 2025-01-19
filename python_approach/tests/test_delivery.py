@@ -50,3 +50,13 @@ def test_delivery_order_price_invalid_distance():
     data = response.json()
     assert "detail" in data
     assert "distance is too long" in data["detail"]
+    
+def test_delivery_order_price_missing_params():
+    """Test API response when required parameters are missing."""
+    response = client.get(
+        "/api/v1/delivery-order-price",
+        params={"venue_slug": "home-assignment-venue-helsinki"},
+    )
+    assert response.status_code == 400  # Unprocessable Entity
+    data = response.json()
+    assert "detail" in data
