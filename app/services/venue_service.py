@@ -1,7 +1,7 @@
 import httpx
+from httpx import RequestError, HTTPStatusError
 from fastapi import HTTPException
-
-API_BASE_URL = "https://consumer-api.development.dev.woltapi.com/home-assignment-api/v1/venues"
+from app.config import API_BASE_URL
 
 async def fetch_venue_data(venue_slug: str, endpoint: str) -> dict:
     """
@@ -24,11 +24,17 @@ async def fetch_venue_data(venue_slug: str, endpoint: str) -> dict:
         # Use an asynchronous HTTP client to fetch the data
         async with httpx.AsyncClient() as client:
             response = await client.get(url)
-            # Check if the response status code indicates success
-            if response.status_code != 200:
-                raise HTTPException(status_code=response.status_code, detail=f"Failed to fetch {endpoint} data for venue {venue_slug}")
+            response.raise_for_status()
             return response.json()
-        
-    except httpx.RequestError as e:
-        # Handle request errors such as connection issues
-        raise HTTPException(status_code=500, detail=f"An error occurred while fetching data: {str(e)}")
+    # Handle HTTP errors such as 404 or 500
+    except HTTPStatusError as http_err:
+        raise HTTPException(
+            status_code=http_err.response.status_code,
+            detail=f"Failed to fetch {endpoint} data for venue {venue_slug}: {http_err.response.text}",
+        )
+    # Handle request errors such as connection issues
+    except RequestError as req_err:
+        raise HTTPException(
+            status_code=500,
+            detail=f"An error occurred while connecting to the API: {str(req_err)}",
+        )
