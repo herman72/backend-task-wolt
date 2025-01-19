@@ -39,7 +39,7 @@ def calculate_surcharge(cart_value: int, dynamic_data: dict) -> int:
     """
     try:
         min_order_value = dynamic_data["venue_raw"]["delivery_specs"]["order_minimum_no_surcharge"]
-        return max(0, min_order_value - cart_value)
+        return max(0, abs(min_order_value - cart_value))
     except KeyError:
         raise HTTPException(status_code=500, detail="Invalid delivery specs in dynamic data")
 
