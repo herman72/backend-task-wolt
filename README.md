@@ -95,6 +95,7 @@ project-folder/
 ├── app/
 │   ├── __init__.py
 │   ├── main.py               # Entry point of the FastAPI app
+│   ├── config.py             # Configuration file for constants
 │   ├── routers/
 │   │   ├── __init__.py
 │   │   ├── delivery.py       # API routes for delivery calculations
@@ -102,8 +103,8 @@ project-folder/
 │   │   ├── __init__.py
 │   │   ├── venue_service.py  # Handles external API calls
 │   ├── utils/
-│       ├── __init__.py
-│       ├── calculate_distance.py  # Distance calculation logic
+│   │   ├── __init__.py
+│   │   ├── calculate_distance.py  # Distance calculation logic
 ├── tests/
 │   ├── test_delivery.py      # Unit tests for the API
 ├── requirements.txt          # Python dependencies
