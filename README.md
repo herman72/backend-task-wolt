@@ -87,13 +87,7 @@ curl http://localhost:8000/api/v1/delivery-order-price\?venue_slug\=home-assignm
 
 ### Valid venue slug
 
-Finland: home-assignment-venue-helsinki
-
-Sweden: home-assignment-venue-stockholm
-
-Germany: home-assignment-venue-berlin
-
-Japan: home-assignment-venue-tokyo
+Finland: home-assignment-venue-helsinki\n\nSweden: home-assignment-venue-stockholm\n\nGermany: home-assignment-venue-berlin\n\nJapan: home-assignment-venue-tokyo\n\n---\n\n
 
 ---
 
@@ -102,21 +96,17 @@ Japan: home-assignment-venue-tokyo
 ```
 project-folder/
 ├── app/
-│   ├── __init__.py
-│   ├── main.py               # Entry point of the FastAPI app
-│   ├── config.py             # Configuration file for constants
+│   ├── main.py               # FastAPI entry point
+│   ├── config.py             # Configuration settings
 │   ├── routers/
-│   │   ├── __init__.py
 │   │   ├── delivery.py       # API routes for delivery calculations
 │   ├── services/
-│   │   ├── __init__.py
-│   │   ├── venue_service.py  # Handles external API calls
+│   │   ├── venue_service.py  # Handles external API requests
 │   ├── utils/
-│   │   ├── __init__.py
-│   │   ├── delivery_calculations.py  # calculation all logic of delivery
+│       ├── delivery_calculations.py  # Delivery logic
 ├── tests/
-│   ├── test_delivery.py      # Unit tests for the API
-├── requirements.txt          # Python dependencies
+│   ├── test_delivery.py      # Unit tests
+├── requirements.txt          # Dependencies
 ├── README.md                 # Project documentation
 ```
 
