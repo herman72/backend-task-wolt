@@ -3,10 +3,10 @@
     "configurations": [
       {
         "name": "FastAPI Debug",
-        "type": "python",
+        "type": "debugpy",
         "request": "launch",
         "module": "uvicorn",
-        "cwd":"${workspaceFolder}/python_approach",
+        "cwd":"${workspaceFolder}",
         "args": [
           "app.main:app",
           "--reload"
