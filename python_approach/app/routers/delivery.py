@@ -64,7 +64,7 @@ async def delivery_order_price_calculator(venue_slug: str = Query(None, descript
 
         delivery_fee = None
         for range in distance_ranges:
-            if range["min"] <= delivery_distance < range["max"] or range["max"] == 0:
+            if range["min"] <= delivery_distance < range.get("max", 0):
                 delivery_fee = base_price + range["a"] + round(range["b"] * delivery_distance / 10)
                 break
 
