@@ -88,8 +88,11 @@ curl http://localhost:8000/api/v1/delivery-order-price\?venue_slug\=home-assignm
 ### Valid venue slug
 
 Finland: `home-assignment-venue-helsinki`
+
 Sweden: `home-assignment-venue-stockholm`
+
 Germany: `home-assignment-venue-berlin`
+
 Japan: `home-assignment-venue-tokyo`
 
 ---
