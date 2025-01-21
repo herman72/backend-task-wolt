@@ -61,23 +61,34 @@ This is a FastAPI-based application that calculates delivery order prices, inclu
 
 ---
 
-## API Endpoints
+## API Usage
 
-### `GET /api/v1/delivery-order-price`
+### Endpoint
 
-#### Example Usage
-Using `curl`:
+**GET /api/v1/delivery-order-price**
+
+### Query Parameters
+
+| Parameter    | Type    | Description                          | Example                        |
+|--------------|---------|--------------------------------------|--------------------------------|
+| `venue_slug` | string  | Unique identifier for the venue      | `home-assignment-venue-helsinki` |
+| `cart_value` | integer | Total value of items in the cart     | `1000`                         |
+| `user_lat`   | float   | Latitude of the user's location      | `60.17094`                     |
+| `user_lon`   | float   | Longitude of the user's location     | `24.93087`                     |
+
+### Example Request
 
 ```bash
-curl http://localhost:8000/api/v1/delivery-order-price\?venue_slug\=home-assignment-venue-helsinki\&cart_value\=1000\&user_lat\=60.17094\&user_lon\=24.93087
+curl "http://localhost:8000/api/v1/delivery-order-price?venue_slug=home-assignment-venue-helsinki&cart_value=1000&user_lat=60.17094&user_lon=24.93087"
 ```
 
-#### Response
+### Example Response
+
 ```json
 {
-  "total_price": 1690,
+  "total_price": 1190,
   "small_order_surcharge": 0,
-  "cart_value": 1500,
+  "cart_value": 1000,
   "delivery": {
     "fee": 190,
     "distance": 177
