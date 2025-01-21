@@ -61,10 +61,14 @@ def calculate_delivery_fee(delivery_distance: float, dynamic_data: dict) -> int:
     try:
         base_price = dynamic_data["venue_raw"]["delivery_specs"]["delivery_pricing"]["base_price"]
         distance_ranges = dynamic_data["venue_raw"]["delivery_specs"]["delivery_pricing"]["distance_ranges"]
-
+        delivey_fee_flag = False
         for range in distance_ranges:
             if range.get("min", 0) <= delivery_distance < range.get("max", 0):
-                return base_price + range["a"] + round(range["b"] * delivery_distance / 10)
+                delivey_fee = base_price + range["a"] + round(range["b"] * delivery_distance / 10)
+                delivey_fee_flag = True
+        
+        if delivey_fee_flag:
+            return delivey_fee
 
         raise HTTPException(status_code=400, detail="Delivery distance is too long")
     except KeyError:
