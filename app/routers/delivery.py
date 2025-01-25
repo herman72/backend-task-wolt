@@ -31,6 +31,55 @@ def validate_input(venue_slug: str, cart_value: int, user_lat: float, user_lon: 
         user_lon=user_lon,
     )
 
+def validate_venue_data(data, data_type: str):
+    """
+    Validate the static or dynamic data fetched for a venue.
+    Args:
+        - data (dict): The fetched data.
+        - data_type (str): Type of data ("static" or "dynamic").
+    Raises:
+        - HTTPException: If data validation fails.
+    """
+    if not data or not isinstance(data, dict):
+        raise HTTPException(
+            status_code=500, detail=f"Invalid {data_type} data: Data is missing or not a valid dictionary."
+        )
+    
+    # Define required keys for static and dynamic data
+    required_keys = {
+        "static": [
+            "venue_raw",
+            "venue_raw.location",
+            "venue_raw.location.coordinates"
+        ],
+        "dynamic": [
+            "venue_raw",
+            "venue_raw.delivery_specs",
+            "venue_raw.delivery_specs.order_minimum_no_surcharge",
+            "venue_raw.delivery_specs.delivery_pricing",
+            "venue_raw.delivery_specs.delivery_pricing.base_price",
+            "venue_raw.delivery_specs.delivery_pricing.distance_ranges",
+        ]
+    }
+
+    # Flatten the data for validation
+    def get_nested_key(data, keys):
+        keys = keys.split(".")
+        for key in keys:
+            if key not in data:
+                return None
+            data = data[key]
+        return data
+
+    # Check required keys
+    for key in required_keys[data_type]:
+        if get_nested_key(data, key) is None:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Invalid {data_type} data: Missing or invalid key '{key}'."
+            )
+
+
 @router.get("/delivery-order-price", tags=["Delivery"])
 async def delivery_order_price_calculator(venue_slug: str = Query(None, description="The venue slug for the delivery."),
     cart_value: int = Query(None, gt=0, description="Cart value in cents."),
@@ -58,6 +107,10 @@ async def delivery_order_price_calculator(venue_slug: str = Query(None, descript
     # Fetch venue data (static and dynamic)
     static_data = await fetch_venue_data(request_data.venue_slug, "static")
     dynamic_data = await fetch_venue_data(request_data.venue_slug, "dynamic")
+    
+    # Validate the fetched data
+    validate_venue_data(static_data, "static")
+    validate_venue_data(dynamic_data, "dynamic")
 
     # Calculate delivery distance
     delivery_distance = calculate_delivery_distance(

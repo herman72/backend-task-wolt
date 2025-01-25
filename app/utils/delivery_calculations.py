@@ -55,7 +55,7 @@ def calculate_delivery_fee(delivery_distance: float, dynamic_data: dict) -> int:
 
     Raises:
         - HTTPException: If the delivery pricing is missing in the dynamic data.
-        - HTTPException: If the delivery distance is too long.
+        - HTTPException: If the delivery distance is too long or delivery fee is invalid.
 
     Returns:
         - int: The delivery fee in cents.
@@ -63,17 +63,36 @@ def calculate_delivery_fee(delivery_distance: float, dynamic_data: dict) -> int:
     try:
         base_price = dynamic_data["venue_raw"]["delivery_specs"]["delivery_pricing"]["base_price"]
         distance_ranges = dynamic_data["venue_raw"]["delivery_specs"]["delivery_pricing"]["distance_ranges"]
-        delivey_fee = None
+        
+        # Initialize delivery fee as None
+        delivery_fee = None
+        
+        # Determine the delivery fee based on distance ranges
         for range in distance_ranges:
             if range.get("min", 0) <= delivery_distance < range.get("max", 0):
-                delivey_fee = base_price + range["a"] + round(range["b"] * delivery_distance / 10)
+                delivery_fee = base_price + range["a"] + round(range["b"] * delivery_distance / 10)
                 break
         
-        if delivey_fee:
-            return delivey_fee
-        raise HTTPException(status_code=400, detail="Delivery distance is too long")
-    except KeyError:
-        raise HTTPException(status_code=500, detail="Invalid delivery pricing in dynamic data")
+        # Validate the calculated fee
+        if delivery_fee is not None and delivery_fee >= 0:
+            return int(delivery_fee)
+        
+        if delivery_fee is not None and delivery_fee < 0:
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Delivery cannot be processed: calculated fee is negative ({delivery_fee} cents)."
+            )
+        
+        # If no valid range is found
+        raise HTTPException(
+            status_code=400, 
+            detail="Delivery distance exceeds all defined ranges. Delivery distance is too long"
+        )
+    except KeyError as e:
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Invalid delivery pricing in dynamic data. Missing key: {e}"
+        )
 
 def calculate_distance(lon1: float, lat1: float, 
                        lon2: float, lat2: float) -> float:
