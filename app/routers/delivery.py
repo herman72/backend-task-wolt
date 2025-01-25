@@ -20,9 +20,19 @@ def validate_input(venue_slug: str, cart_value: int, user_lat: float, user_lon: 
     Returns:
         - DeliveryRequest: 
     """
-    if not (venue_slug and cart_value and user_lat and user_lon):
+    missing_params = []
+    if not venue_slug:
+        missing_params.append("venue_slug")
+    if not cart_value:
+        missing_params.append("cart_value")
+    if not user_lat:
+        missing_params.append("user_lat")
+    if not user_lon:
+        missing_params.append("user_lon")
+    
+    if missing_params:
         raise HTTPException(
-            status_code=400, detail="Invalid input: Provide all required query parameters."
+            status_code=400, detail=f"Invalid input: Missing required query parameters: {', '.join(missing_params)}"
         )
     return DeliveryRequest(
         venue_slug=venue_slug,
